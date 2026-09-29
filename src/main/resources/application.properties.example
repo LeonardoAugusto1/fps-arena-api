@@ -1,0 +1,7 @@
+spring.application.name=fps-arena-api
+spring.datasource.url=jdbc:mysql://localhost:3306/fps_arena
+spring.datasource.username=root
+spring.datasource.password=SUA_SENHA_AQUI
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.open-in-view=false
