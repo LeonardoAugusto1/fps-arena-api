@@ -1,6 +1,8 @@
 package com.example.fpsarena.service;
 
 import com.example.fpsarena.dto.CriarPartidaRequest;
+import com.example.fpsarena.dto.EntrarPartidaRequest;
+import com.example.fpsarena.dto.ProntoRequest;
 import com.example.fpsarena.model.Partida;
 import com.example.fpsarena.model.StatusPartida;
 import com.example.fpsarena.model.Usuario;
@@ -10,6 +12,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import com.example.fpsarena.model.PartidaJogador;
+import com.example.fpsarena.model.TimeJogo;
+import com.example.fpsarena.repositoty.PartidaJogadorRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -21,13 +26,17 @@ public class PartidaService {
     private final PartidaRepository partidaRepository;
     private final UsuarioRespository usuarioRespository;
     private final CarteiraService carteiraService;
+    private final PartidaJogadorRepository partidaJogadorRepository;
 
+    // DEPOIS
     public PartidaService(PartidaRepository partidaRepository,
                           UsuarioRespository usuarioRespository,
-                          CarteiraService carteiraService) {
+                          CarteiraService carteiraService,
+                          PartidaJogadorRepository partidaJogadorRepository) {
         this.partidaRepository = partidaRepository;
         this.usuarioRespository = usuarioRespository;
         this.carteiraService = carteiraService;
+        this.partidaJogadorRepository = partidaJogadorRepository;
     }
 
     @Transactional
@@ -52,9 +61,63 @@ public class PartidaService {
         partida.setCriador(criador);
         partida.setStatus(StatusPartida.AGUARDANDO);
         partida.setDataCriacao(LocalDateTime.now());
-        return partidaRepository.save(partida);
+        Partida partidaSalva = partidaRepository.save(partida);
+
+        PartidaJogador ficha = new PartidaJogador();
+        ficha.setPartida(partidaSalva);
+        ficha.setUsuario(criador);
+        ficha.setTimeJogo(TimeJogo.CT);
+        ficha.setLider(true);
+        ficha.setPronto(false);
+        partidaJogadorRepository.save(ficha);
+
+        return partidaSalva;
+    }
+    @Transactional
+    public PartidaJogador entrar(Long partidaId, EntrarPartidaRequest request) {
+        Partida partida = buscar(partidaId);
+
+        Usuario usuario = usuarioRespository.findById(request.getUsuarioId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
+
+        if (partidaJogadorRepository.existsByPartidaIdAndUsuarioId(partidaId, usuario.getId())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Jogador já está nessa partida");
+        }
+
+        int limiteDoTime = Integer.parseInt(partida.getModo().split("v")[0]);
+        long ocupados = partidaJogadorRepository.countByPartidaIdAndTimeJogo(partidaId, request.getTimeJogo());
+        if (ocupados >= limiteDoTime) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Time lotado");
+        }
+
+        if (partida.getValorInscricao().compareTo(BigDecimal.ZERO) > 0) {
+            carteiraService.debitar(usuario, partida.getValorInscricao(), "Inscrição em partida");
+        }
+
+        PartidaJogador ficha = new PartidaJogador();
+        ficha.setPartida(partida);
+        ficha.setUsuario(usuario);
+        ficha.setTimeJogo(request.getTimeJogo());
+        ficha.setLider(false);
+        ficha.setPronto(false);
+        return partidaJogadorRepository.save(ficha);
     }
 
+    public List<PartidaJogador> lobby(Long partidaId) {
+        buscar(partidaId);
+        return partidaJogadorRepository.findByPartidaId(partidaId);
+    }
+    @Transactional
+    public PartidaJogador alternarPronto(Long partidaId, ProntoRequest request) {
+        buscar(partidaId);
+
+        PartidaJogador ficha = partidaJogadorRepository
+                .findByPartidaIdAndUsuarioId(partidaId, request.getUsuarioId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Jogador não está nessa partida"));
+
+        ficha.setPronto(!ficha.isPronto());
+        return partidaJogadorRepository.save(ficha);
+    }
     public List<Partida> listar() {
         return partidaRepository.findAll();
     }
