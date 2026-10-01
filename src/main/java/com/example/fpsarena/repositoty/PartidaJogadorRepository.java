@@ -17,6 +17,7 @@ public interface PartidaJogadorRepository extends JpaRepository<PartidaJogador, 
     boolean existsByPartidaIdAndUsuarioId(Long partidaId, Long usuarioId);
 
     Optional<PartidaJogador> findByPartidaIdAndUsuarioId(Long partidaId, Long usuarioId);
+    List<PartidaJogador> findByPartidaIdOrderByDataEntradaAsc(Long partidaId);
 
     long countByPartidaIdAndTimeJogo(Long partidaId, TimeJogo timeJogo);
 }

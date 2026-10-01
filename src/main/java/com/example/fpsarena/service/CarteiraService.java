@@ -48,7 +48,12 @@ public class CarteiraService {
         usuarioRespository.save(usuario);
         return registrar(usuario, descricao, valor, TipoTransacao.SAIDA);
     }
-
+    @Transactional
+    public Transacao creditar(Usuario usuario, BigDecimal valor, String descricao) {
+        usuario.setSaldo(usuario.getSaldo().add(valor));
+        usuarioRespository.save(usuario);
+        return registrar(usuario, descricao, valor, TipoTransacao.ENTRADA);
+    }
     public List<Transacao> listar(Long usuarioId) {
         buscarUsuario(usuarioId);
         return transacaoRepository.findByUsuarioIdOrderByDataHoraDesc(usuarioId);

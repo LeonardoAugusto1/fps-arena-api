@@ -15,6 +15,9 @@ import org.springframework.web.server.ResponseStatusException;
 import com.example.fpsarena.model.PartidaJogador;
 import com.example.fpsarena.model.TimeJogo;
 import com.example.fpsarena.repositoty.PartidaJogadorRepository;
+import com.example.fpsarena.dto.EnviarMensagemRequest;
+import com.example.fpsarena.model.MensagemChat;
+import com.example.fpsarena.repositoty.MensagemChatRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -27,16 +30,19 @@ public class PartidaService {
     private final UsuarioRespository usuarioRespository;
     private final CarteiraService carteiraService;
     private final PartidaJogadorRepository partidaJogadorRepository;
+    private final MensagemChatRepository mensagemChatRepository;
 
     // DEPOIS
     public PartidaService(PartidaRepository partidaRepository,
                           UsuarioRespository usuarioRespository,
                           CarteiraService carteiraService,
-                          PartidaJogadorRepository partidaJogadorRepository) {
+                          PartidaJogadorRepository partidaJogadorRepository,
+                          MensagemChatRepository mensagemChatRepository) {
         this.partidaRepository = partidaRepository;
         this.usuarioRespository = usuarioRespository;
         this.carteiraService = carteiraService;
         this.partidaJogadorRepository = partidaJogadorRepository;
+        this.mensagemChatRepository = mensagemChatRepository;
     }
 
     @Transactional
@@ -72,11 +78,13 @@ public class PartidaService {
         partidaJogadorRepository.save(ficha);
 
         return partidaSalva;
-    }
-    @Transactional
-    public PartidaJogador entrar(Long partidaId, EntrarPartidaRequest request) {
-        Partida partida = buscar(partidaId);
+    }@Transactional
+        public PartidaJogador entrar(Long partidaId, EntrarPartidaRequest request) {
+            Partida partida = buscar(partidaId);
 
+            if (partida.getStatus() != StatusPartida.AGUARDANDO) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Partida não está aguardando jogadores");
+            }
         Usuario usuario = usuarioRespository.findById(request.getUsuarioId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
 
@@ -118,8 +126,50 @@ public class PartidaService {
         ficha.setPronto(!ficha.isPronto());
         return partidaJogadorRepository.save(ficha);
     }
+    @Transactional
+    public List<PartidaJogador> sair(Long partidaId, Long usuarioId) {
+        Partida partida = buscar(partidaId);
+
+        PartidaJogador ficha = partidaJogadorRepository
+                .findByPartidaIdAndUsuarioId(partidaId, usuarioId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Jogador não está nessa partida"));
+
+        if (partida.getValorInscricao().compareTo(BigDecimal.ZERO) > 0) {
+            carteiraService.creditar(ficha.getUsuario(), partida.getValorInscricao(), "Devolução de inscrição");
+        }
+
+        boolean eraLider = ficha.isLider();
+        partidaJogadorRepository.delete(ficha);
+
+        List<PartidaJogador> restantes = partidaJogadorRepository.findByPartidaIdOrderByDataEntradaAsc(partidaId);
+
+        if (restantes.isEmpty()) {
+            partida.setStatus(StatusPartida.FINALIZADA);
+            partidaRepository.save(partida);
+        } else if (eraLider) {
+            PartidaJogador novoLider = restantes.get(0);
+            novoLider.setLider(true);
+            partidaJogadorRepository.save(novoLider);
+        }
+
+        return restantes;
+    }
     public List<Partida> listar() {
         return partidaRepository.findAll();
+    }
+    @Transactional
+    public MensagemChat enviarMensagem(Long partidaId, EnviarMensagemRequest request) {
+        Partida partida = buscar(partidaId);
+
+        PartidaJogador ficha = partidaJogadorRepository
+                .findByPartidaIdAndUsuarioId(partidaId, request.getUsuarioId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Jogador não está nessa partida"));
+
+        MensagemChat mensagem = new MensagemChat();
+        mensagem.setPartida(partida);
+        mensagem.setUsuario(ficha.getUsuario());
+        mensagem.setTexto(request.getTexto().trim());
+        return mensagemChatRepository.save(mensagem);
     }
 
     public Partida buscar(Long id) {
