@@ -25,6 +25,7 @@ public class PartidaController {
     public List<PartidaResponse> listar() {
         return partidaService.listar().stream().map(PartidaResponse::de).toList();
     }
+
     @GetMapping("/{id}")
     public PartidaResponse buscar(@PathVariable Long id) {
         return PartidaResponse.de(partidaService.buscar(id));
@@ -50,5 +51,14 @@ public class PartidaController {
         return MensagemChatResponse.de(
                 partidaService.enviarMensagem(id, request)
         );
+    }
+    @PostMapping("/{id}/entrar")
+    public JogadorLobbyResponse entrar(@PathVariable Long id, @Valid @RequestBody EntrarPartidaRequest request) {
+        return JogadorLobbyResponse.de(partidaService.entrar(id, request));
+    }
+
+    @GetMapping("/{id}/mensagens")
+    public List<MensagemChatResponse> listarMensagens(@PathVariable Long id) {
+        return partidaService.listarMensagens(id).stream().map(MensagemChatResponse::de).toList();
     }
 }

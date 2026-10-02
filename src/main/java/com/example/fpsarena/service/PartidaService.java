@@ -78,7 +78,8 @@ public class PartidaService {
         partidaJogadorRepository.save(ficha);
 
         return partidaSalva;
-    }@Transactional
+    }
+    @Transactional
         public PartidaJogador entrar(Long partidaId, EntrarPartidaRequest request) {
             Partida partida = buscar(partidaId);
 
@@ -171,6 +172,11 @@ public class PartidaService {
         mensagem.setTexto(request.getTexto().trim());
         return mensagemChatRepository.save(mensagem);
     }
+    public List<MensagemChat> listarMensagens(Long partidaId) {
+        buscar(partidaId);
+        return mensagemChatRepository.findByPartidaIdOrderByDataHoraAsc(partidaId);
+    }
+
 
     public Partida buscar(Long id) {
         return partidaRepository.findById(id)
