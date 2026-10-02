@@ -1,0 +1,846 @@
+/* ===============================================================
+   FPS ARENA
+   CSS PRINCIPAL
+================================================================ */
+
+/* ===============================================================
+   BASE
+================================================================ */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+
+  background:
+    radial-gradient(
+      circle at 80% 0%,
+      rgba(99, 102, 241, 0.08),
+      transparent 30%
+    ),
+    #05060a;
+
+  color: #ffffff;
+
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+button,
+input {
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* ===============================================================
+   SCROLLBAR
+================================================================ */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ===============================================================
+   AVATAR
+================================================================ */
+
+.avatar {
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 9999px;
+
+  font-weight: 700;
+
+  color: #ffffff;
+
+  flex-shrink: 0;
+}
+
+/* ===============================================================
+   LOGO
+================================================================ */
+
+.fps-logo {
+  background: linear-gradient(135deg, #4f46e5, #9333ea, #d946ef);
+
+  box-shadow: 0 0 25px rgba(99, 102, 241, 0.35);
+}
+
+/* ===============================================================
+   SIDEBAR
+================================================================ */
+
+.nav-btn {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  border-radius: 9px;
+
+  padding: 10px 12px;
+
+  font-size: 14px;
+
+  color: rgba(255, 255, 255, 0.5);
+
+  cursor: pointer;
+
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.nav-btn:hover {
+  background: rgba(255, 255, 255, 0.04);
+
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.nav-btn.active {
+  background: linear-gradient(
+    90deg,
+    rgba(99, 102, 241, 0.16),
+    rgba(217, 70, 239, 0.05)
+  );
+
+  color: #ffffff;
+
+  border: 1px solid rgba(99, 102, 241, 0.25);
+}
+
+.nav-btn.active svg {
+  color: #818cf8;
+}
+
+/* ===============================================================
+   PÁGINAS
+================================================================ */
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+/* ===============================================================
+   TOPBAR
+================================================================ */
+
+.topbar-balance {
+  background: rgba(255, 255, 255, 0.035);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ===============================================================
+   HERO
+================================================================ */
+
+.hero-container {
+  min-height: 520px;
+
+  background: #090b12;
+
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.35);
+}
+
+/*
+  Imagem de fundo gamer.
+  O restante dos overlays deixa a imagem escura
+  para o texto continuar legível.
+*/
+
+.hero-image {
+  background-image: url("https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1800&q=85");
+
+  background-size: cover;
+
+  background-position: center;
+
+  opacity: 0.75;
+
+  filter: saturate(1.15) contrast(1.1);
+}
+
+.hero-overlay {
+  background: linear-gradient(
+    90deg,
+    rgba(4, 5, 10, 0.98) 0%,
+    rgba(4, 5, 10, 0.92) 35%,
+    rgba(4, 5, 10, 0.45) 65%,
+    rgba(4, 5, 10, 0.15) 100%
+  );
+}
+
+.hero-grid {
+  opacity: 0.18;
+
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+
+  background-size: 45px 45px;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.status-dot {
+  display: inline-block;
+
+  width: 7px;
+  height: 7px;
+
+  border-radius: 999px;
+
+  background: #34d399;
+
+  box-shadow: 0 0 12px rgba(52, 211, 153, 0.8);
+}
+
+.status-dot.small {
+  width: 5px;
+  height: 5px;
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, #818cf8, #d946ef);
+
+  -webkit-background-clip: text;
+
+  background-clip: text;
+
+  color: transparent;
+}
+
+/* ===============================================================
+   BOTÕES
+================================================================ */
+
+.primary-btn {
+  background: linear-gradient(90deg, #4f46e5, #c026d3);
+
+  color: #ffffff;
+
+  box-shadow: 0 10px 30px rgba(79, 70, 229, 0.22);
+
+  transition:
+    transform 0.15s ease,
+    filter 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.primary-btn:hover {
+  filter: brightness(1.08);
+
+  transform: translateY(-1px);
+
+  box-shadow: 0 14px 35px rgba(79, 70, 229, 0.3);
+}
+
+.secondary-btn {
+  background: rgba(255, 255, 255, 0.025);
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  color: rgba(255, 255, 255, 0.8);
+
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.secondary-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ===============================================================
+   CARDS DE FUNÇÃO
+================================================================ */
+
+.feature-card {
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  background: rgba(255, 255, 255, 0.018);
+
+  border-radius: 12px;
+
+  padding: 18px;
+
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-2px);
+
+  border-color: rgba(129, 140, 248, 0.22);
+
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.feature-icon {
+  display: grid;
+
+  place-items: center;
+
+  width: 38px;
+  height: 38px;
+
+  border-radius: 9px;
+
+  background: rgba(99, 102, 241, 0.1);
+
+  color: #818cf8;
+}
+
+.feature-card p {
+  margin-top: 12px;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+
+  color: rgba(255, 255, 255, 0.58);
+}
+
+/* ===============================================================
+   CARDS DE CAMPEONATO
+================================================================ */
+
+.tournament-card {
+  overflow: hidden;
+
+  border: 1px solid rgba(255, 255, 255, 0.07);
+
+  border-radius: 16px;
+
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.045),
+    rgba(255, 255, 255, 0.018)
+  );
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.tournament-card:hover {
+  transform: translateY(-4px);
+
+  border-color: rgba(129, 140, 248, 0.35);
+
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.3);
+}
+
+.tournament-cover {
+  position: relative;
+
+  height: 155px;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(135deg, rgba(79, 70, 229, 0.55), rgba(217, 70, 239, 0.18)),
+    url("https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=900&q=80");
+
+  background-size: cover;
+
+  background-position: center;
+}
+
+.tournament-cover-overlay {
+  position: absolute;
+
+  inset: 0;
+
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.8));
+}
+
+.tournament-cover-title {
+  position: absolute;
+
+  left: 18px;
+  bottom: 15px;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.25em;
+
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.live-badge {
+  position: absolute;
+
+  right: 14px;
+  top: 14px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  padding: 5px 8px;
+
+  border-radius: 999px;
+
+  background: rgba(225, 29, 72, 0.18);
+
+  border: 1px solid rgba(244, 63, 94, 0.25);
+
+  color: #fb7185;
+
+  font-size: 10px;
+
+  font-weight: 700;
+}
+
+.live-dot {
+  width: 6px;
+  height: 6px;
+
+  border-radius: 999px;
+
+  background: #f43f5e;
+
+  box-shadow: 0 0 10px rgba(244, 63, 94, 0.8);
+}
+
+.status-badge {
+  padding: 4px 7px;
+
+  border-radius: 6px;
+
+  background: rgba(255, 255, 255, 0.05);
+
+  color: rgba(255, 255, 255, 0.4);
+
+  font-size: 9px;
+
+  font-weight: 700;
+}
+
+.status-badge.open {
+  background: rgba(16, 185, 129, 0.1);
+
+  color: #34d399;
+}
+
+.tournament-button {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  border: 1px solid rgba(129, 140, 248, 0.22);
+
+  background: rgba(99, 102, 241, 0.08);
+
+  color: #a5b4fc;
+
+  padding: 10px 14px;
+
+  border-radius: 8px;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.tournament-button:hover {
+  background: rgba(99, 102, 241, 0.16);
+
+  border-color: rgba(129, 140, 248, 0.4);
+}
+
+.empty-tournament {
+  min-height: 180px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 10px;
+
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+
+  border-radius: 14px;
+
+  color: rgba(255, 255, 255, 0.3);
+
+  font-size: 13px;
+}
+
+.error-box {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 18px;
+
+  border: 1px solid rgba(244, 63, 94, 0.15);
+
+  border-radius: 12px;
+
+  background: rgba(244, 63, 94, 0.04);
+
+  color: rgba(255, 255, 255, 0.65);
+}
+
+/* ===============================================================
+   FORMULÁRIOS
+================================================================ */
+
+.form-label {
+  display: block;
+
+  font-size: 11px;
+
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.12em;
+
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.form-input {
+  margin-top: 8px;
+
+  width: 100%;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  border-radius: 8px;
+
+  background: rgba(255, 255, 255, 0.03);
+
+  padding: 12px 14px;
+
+  font-size: 14px;
+
+  color: #ffffff;
+
+  outline: none;
+}
+
+.form-input:focus {
+  border-color: rgba(99, 102, 241, 0.7);
+
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.08);
+}
+
+.form-input::placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.select-box {
+  margin-top: 8px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  width: 100%;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  border-radius: 8px;
+
+  background: rgba(255, 255, 255, 0.03);
+
+  padding: 12px 14px;
+
+  font-size: 14px;
+
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.modo-btn,
+.perm-btn {
+  flex: 1;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  border-radius: 8px;
+
+  padding: 12px;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  color: rgba(255, 255, 255, 0.5);
+
+  background: transparent;
+}
+
+.modo-btn:hover,
+.perm-btn:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.modo-btn.selected,
+.perm-btn.selected {
+  border-color: #6366f1;
+
+  background: rgba(99, 102, 241, 0.1);
+
+  color: #a5b4fc;
+}
+
+input[type="range"] {
+  accent-color: #818cf8;
+}
+
+/* ===============================================================
+   MAPA
+================================================================ */
+
+.map-thumb {
+  width: 28px;
+  height: 22px;
+
+  display: inline-block;
+
+  border-radius: 5px;
+}
+
+.map-inferno {
+  background: linear-gradient(135deg, #7c2d12, #ea580c, #facc15);
+}
+
+/* ===============================================================
+   BADGES
+================================================================ */
+
+.badge {
+  border-radius: 6px;
+
+  background: rgba(255, 255, 255, 0.05);
+
+  padding: 5px 8px;
+}
+
+/* ===============================================================
+   LOBBY
+================================================================ */
+
+.team-card {
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.02);
+
+  padding: 16px;
+}
+
+.ct-card {
+  border: 1px solid rgba(14, 165, 233, 0.3);
+}
+
+.t-card {
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.vs-box {
+  display: grid;
+
+  place-items: center;
+
+  width: 56px;
+  height: 56px;
+
+  border-radius: 16px;
+
+  border: 1px solid rgba(99, 102, 241, 0.4);
+
+  background: rgba(99, 102, 241, 0.1);
+
+  color: #a5b4fc;
+
+  font-size: 13px;
+
+  font-weight: 900;
+
+  transform: rotate(45deg);
+}
+
+.vs-box span {
+  transform: rotate(-45deg);
+}
+
+/* ===============================================================
+   PAINÉIS
+================================================================ */
+
+.panel {
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.panel-title {
+  font-size: 11px;
+
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.12em;
+
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.stat-label {
+  font-size: 10px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.1em;
+
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* ===============================================================
+   CARTEIRA
+================================================================ */
+
+.wallet-card {
+  border: 1px solid rgba(255, 255, 255, 0.06);
+
+  background: linear-gradient(
+    135deg,
+    rgba(49, 46, 129, 0.35),
+    rgba(112, 26, 117, 0.18)
+  );
+}
+
+/* ===============================================================
+   PÁGINAS EM DESENVOLVIMENTO
+================================================================ */
+
+.empty-page {
+  min-height: 280px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 14px;
+
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+
+  border-radius: 16px;
+
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.empty-page p {
+  font-size: 13px;
+}
+
+/* ===============================================================
+   RESPONSIVIDADE
+================================================================ */
+
+@media (max-width: 768px) {
+  .hero-container {
+    min-height: 500px;
+  }
+
+  .hero-image {
+    background-position: 65% center;
+  }
+
+  .hero-overlay {
+    background: linear-gradient(
+      90deg,
+      rgba(4, 5, 10, 0.98),
+      rgba(4, 5, 10, 0.72)
+    );
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-container {
+    min-height: 560px;
+  }
+
+  .hero-content h2 {
+    font-size: 38px;
+  }
+
+  .topbar-balance span {
+    display: none;
+  }
+}
