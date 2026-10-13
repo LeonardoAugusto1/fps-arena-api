@@ -28,6 +28,9 @@ jobs:
 
       - name: Verificar dependencias
         run: ./mvnw dependency:tree | grep mysql
+      
+      - name: Verificar application properties
+        run: cat src/main/resources/application.properties
 
       - name: Executar testes
         run: ./mvnw test
