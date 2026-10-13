@@ -1,0 +1,23 @@
+name: CI do FPS Arena
+on:
+  push:
+
+    jobs:
+      build:
+        runs-on: ubuntu-latest
+
+        steps:
+          - name: baixar codigo
+            uses: actions/checkout@v4
+
+          - name: Configurar Java
+            uses: action/setup-java@v4
+            with:
+                  java-version: '17'
+                  distribution: 'temurin'
+
+          - name: Executar testes
+            run: ./mvnw test
+
+          - name: Fazer build
+            run: ./mvnw package -DskipTests
