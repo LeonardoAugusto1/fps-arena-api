@@ -48,7 +48,7 @@ jobs:
       - name: Executar testes
         run: ./mvnw test
         env:
-          SPRING_PROFILES_ACTIVE: docker
+          SPRING_PROFILES_ACTIVE: ci
 
       - name: Fazer build
         run: ./mvnw package -DskipTests
