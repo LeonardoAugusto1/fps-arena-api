@@ -1,4 +1,4 @@
-package com.example.fpsarena.CorsConfig.java;
+package com.example.fpsarena.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

@@ -578,18 +578,21 @@
                   Tipo de partida
                 </label>
 
-                <div class="select-box">
+                <select id="partida-tipo" class="form-input">
 
-                  <span>
+                  <option value="Eliminação Simples">
                     Eliminação Simples
-                  </span>
+                  </option>
 
-                  <i
-                    data-lucide="chevron-down"
-                    style="width:14px;height:14px;"
-                  ></i>
+                  <option value="Melhor de 3">
+                    Melhor de 3
+                  </option>
 
-                </div>
+                  <option value="Melhor de 5">
+                    Melhor de 5
+                  </option>
+
+                </select>
 
               </div>
 
@@ -600,22 +603,17 @@
                   Mapa
                 </label>
 
-                <div class="select-box">
+                <select id="partida-mapa" class="form-input">
 
-                  <span class="flex items-center gap-2">
+                  <option value="Inferno">Inferno</option>
+                  <option value="Mirage">Mirage</option>
+                  <option value="Dust II">Dust II</option>
+                  <option value="Nuke">Nuke</option>
+                  <option value="Ancient">Ancient</option>
+                  <option value="Overpass">Overpass</option>
+                  <option value="Vertigo">Vertigo</option>
 
-                    <span class="map-thumb map-inferno"></span>
-
-                    Inferno
-
-                  </span>
-
-                  <i
-                    data-lucide="chevron-down"
-                    style="width:14px;height:14px;"
-                  ></i>
-
-                </div>
+                </select>
 
               </div>
 
@@ -626,18 +624,14 @@
                   Região
                 </label>
 
-                <div class="select-box">
+                <select id="partida-regiao" class="form-input">
 
-                  <span>
-                    Brasil
-                  </span>
+                  <option value="Brasil">Brasil</option>
+                  <option value="América do Norte">América do Norte</option>
+                  <option value="Europa">Europa</option>
+                  <option value="Ásia">Ásia</option>
 
-                  <i
-                    data-lucide="chevron-down"
-                    style="width:14px;height:14px;"
-                  ></i>
-
-                </div>
+                </select>
 
               </div>
 
@@ -656,6 +650,7 @@
                 </label>
 
                 <input
+                  id="partida-nome"
                   value="Partida da Galera"
                   class="form-input"
                 />
@@ -670,6 +665,7 @@
                 </label>
 
                 <input
+                  id="partida-senha"
                   placeholder="Digite uma senha"
                   class="form-input"
                 />
@@ -686,6 +682,7 @@
                 <div class="mt-2 flex items-center justify-between gap-4">
 
                   <input
+                    id="partida-valor"
                     value="R$ 10,00"
                     class="form-input"
                   />
@@ -773,11 +770,17 @@
 
 
           <button
-            onclick="goPage('lobby')"
+            id="criar-partida-btn"
+            onclick="criarPartida()"
             class="primary-btn mt-10 w-full rounded-lg py-3.5 text-sm font-bold md:w-72"
           >
             Criar partida
           </button>
+
+          <div
+            id="criar-partida-feedback"
+            class="hidden"
+          ></div>
 
         </div>
 

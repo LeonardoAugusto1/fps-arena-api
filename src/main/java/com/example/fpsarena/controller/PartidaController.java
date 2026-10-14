@@ -7,6 +7,7 @@ import com.example.fpsarena.service.PartidaService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import com.example.fpsarena.model.MensagemChat;
+import org.springframework.security.core.Authentication;
 import java.util.List;
 
 @RestController
@@ -35,7 +36,12 @@ public class PartidaController {
         return partidaService.lobby(id).stream().map(JogadorLobbyResponse::de).toList();
     }
     @PostMapping("/{id}/pronto")
-    public JogadorLobbyResponse pronto(@PathVariable Long id, @Valid @RequestBody ProntoRequest request) {
+    public JogadorLobbyResponse pronto(@PathVariable Long id, Authentication authentication) {
+        Long usuarioId = (Long) authentication.getPrincipal();
+
+        ProntoRequest request = new ProntoRequest();
+        request.setUsuarioId(usuarioId);
+
         return JogadorLobbyResponse.de(partidaService.alternarPronto(id, request));
     }
 

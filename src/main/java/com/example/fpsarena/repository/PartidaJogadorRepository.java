@@ -1,4 +1,4 @@
-package com.example.fpsarena.repositoty;
+package com.example.fpsarena.repository;
 
 import com.example.fpsarena.model.PartidaJogador;
 import com.example.fpsarena.model.TimeJogo;

@@ -1,7 +1,7 @@
 package com.example.fpsarena.controller;
 
 import com.example.fpsarena.model.Usuario;
-import com.example.fpsarena.repositoty.UsuarioRespository;
+import com.example.fpsarena.repository.UsuarioRespository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 

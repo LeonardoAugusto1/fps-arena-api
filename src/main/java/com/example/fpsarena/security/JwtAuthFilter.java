@@ -45,7 +45,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
 
-        String nome = jwtService.extrairNome(token);
+        Long usuarioId = jwtService.extrairUsuarioId(token);
         String role = jwtService.extrairRole(token);
 
         var authorities = List.of(
@@ -54,7 +54,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         var authentication =
                 new UsernamePasswordAuthenticationToken(
-                        nome,
+                        usuarioId,
                         null,
                         authorities
                 );

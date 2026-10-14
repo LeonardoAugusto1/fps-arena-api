@@ -52,8 +52,8 @@ public class JwtService {
     }
 
     public Long extrairUsuarioId(String token) {
-        return extrairClaims(token)
-                .get("usuarioId", Long.class);
+        Object valor = extrairClaims(token).get("usuarioId");
+        return ((Number) valor).longValue();
     }
     public boolean tokenValido(String token) {
 

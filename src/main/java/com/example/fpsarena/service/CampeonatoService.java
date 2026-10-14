@@ -3,7 +3,7 @@ package com.example.fpsarena.service;
 import com.example.fpsarena.dto.CriarCampeonatoRequest;
 import com.example.fpsarena.model.Campeonato;
 import com.example.fpsarena.model.StatusCampeonato;
-import com.example.fpsarena.repositoty.CampeonatoRepository;
+import com.example.fpsarena.repository.CampeonatoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 

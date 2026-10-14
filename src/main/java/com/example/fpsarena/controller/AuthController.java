@@ -2,7 +2,7 @@ package com.example.fpsarena.controller;
 
 import com.example.fpsarena.dto.LoginRequest;
 import com.example.fpsarena.model.Usuario;
-import com.example.fpsarena.repositoty.UsuarioRespository;
+import com.example.fpsarena.repository.UsuarioRespository;
 import com.example.fpsarena.security.JwtService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

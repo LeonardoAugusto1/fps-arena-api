@@ -245,6 +245,11 @@ function initCriarPartidaInteractions() {
     document.getElementById("perm-group");
 
 
+  // =========================================================
+  // MODO DE JOGO
+  // 5v5 / 2v2 / 1v1
+  // =========================================================
+
   if (modoGroup) {
 
     modoGroup.addEventListener(
@@ -278,6 +283,11 @@ function initCriarPartidaInteractions() {
   }
 
 
+  // =========================================================
+  // PERMISSÃO
+  // PÚBLICA / PRIVADA
+  // =========================================================
+
   if (permGroup) {
 
     permGroup.addEventListener(
@@ -303,6 +313,78 @@ function initCriarPartidaInteractions() {
 
         button.classList.add(
           "selected"
+        );
+
+      }
+    );
+
+  }
+
+
+  // =========================================================
+  // TIPO DE PARTIDA
+  // =========================================================
+
+  const tipoSelect =
+    document.getElementById("partida-tipo");
+
+  if (tipoSelect) {
+
+    tipoSelect.addEventListener(
+      "change",
+      () => {
+
+        console.log(
+          "Tipo de partida:",
+          tipoSelect.value
+        );
+
+      }
+    );
+
+  }
+
+
+  // =========================================================
+  // MAPA
+  // =========================================================
+
+  const mapaSelect =
+    document.getElementById("partida-mapa");
+
+  if (mapaSelect) {
+
+    mapaSelect.addEventListener(
+      "change",
+      () => {
+
+        console.log(
+          "Mapa selecionado:",
+          mapaSelect.value
+        );
+
+      }
+    );
+
+  }
+
+
+  // =========================================================
+  // REGIÃO
+  // =========================================================
+
+  const regiaoSelect =
+    document.getElementById("partida-regiao");
+
+  if (regiaoSelect) {
+
+    regiaoSelect.addEventListener(
+      "change",
+      () => {
+
+        console.log(
+          "Região selecionada:",
+          regiaoSelect.value
         );
 
       }

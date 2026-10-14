@@ -596,6 +596,16 @@ button {
   color: rgba(255, 255, 255, 0.25);
 }
 
+select.form-input {
+  background-color: #0b0c12;
+  color: #ffffff;
+}
+
+select.form-input option {
+  background-color: #0b0c12;
+  color: #ffffff;
+}
+
 .select-box {
   margin-top: 8px;
 
