@@ -43,7 +43,7 @@ jobs:
       - name: Testar conexao com MySQL
         run: |
           echo "=== TESTANDO MYSQL ==="
-          mysqladmin ping -h mysql -u root -proot123
+          mysqladmin ping -h 127.0.0.1 -u root -proot123
 
       - name: Executar testes
         run: ./mvnw test
