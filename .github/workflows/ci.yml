@@ -28,6 +28,7 @@ jobs:
 
       - name: Verificar dependencias
         run: ./mvnw dependency:tree | grep mysql
+
       - name: Verificar estrutura do projeto
         run: |
           echo "=== LOCAL ATUAL ==="
@@ -38,11 +39,11 @@ jobs:
 
           echo "=== APPLICATION.PROPERTIES ==="
           find . -name "application.properties" -print
-      - name: Verificar local do projeto
+
+      - name: Testar conexao com MySQL
         run: |
-          pwd
-          ls
-          find . -name "application.properties"
+          echo "=== TESTANDO MYSQL ==="
+          mysqladmin ping -h mysql -u root -proot123
 
       - name: Executar testes
         run: ./mvnw test
