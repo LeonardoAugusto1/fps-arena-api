@@ -28,10 +28,16 @@ jobs:
 
       - name: Verificar dependencias
         run: ./mvnw dependency:tree | grep mysql
-      - name: Verificar configuracao
+      - name: Verificar estrutura do projeto
         run: |
-          echo "=== application.properties ==="
-          cat src/main/resources/application.properties
+          echo "=== LOCAL ATUAL ==="
+          pwd
+
+          echo "=== ARQUIVOS DA RAIZ ==="
+          ls -la
+
+          echo "=== APPLICATION.PROPERTIES ==="
+          find . -name "application.properties" -print
       - name: Verificar local do projeto
         run: |
           pwd
