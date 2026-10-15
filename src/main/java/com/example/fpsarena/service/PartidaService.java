@@ -46,8 +46,8 @@ public class PartidaService {
     }
 
     @Transactional
-    public Partida criar(CriarPartidaRequest request) {
-        Usuario criador = usuarioRespository.findById(request.getUsuarioId())
+    public Partida criar(Long usuarioId, CriarPartidaRequest request) {
+        Usuario criador = usuarioRespository.findById(usuarioId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
 
         if (request.getValorInscricao().compareTo(BigDecimal.ZERO) > 0) {
@@ -80,13 +80,14 @@ public class PartidaService {
         return partidaSalva;
     }
     @Transactional
-        public PartidaJogador entrar(Long partidaId, EntrarPartidaRequest request) {
-            Partida partida = buscar(partidaId);
+    public PartidaJogador entrar(Long partidaId, Long usuarioId, EntrarPartidaRequest request) {
+        Partida partida = buscar(partidaId);
 
-            if (partida.getStatus() != StatusPartida.AGUARDANDO) {
-                throw new ResponseStatusException(HttpStatus.CONFLICT, "Partida não está aguardando jogadores");
-            }
-        Usuario usuario = usuarioRespository.findById(request.getUsuarioId())
+        if (partida.getStatus() != StatusPartida.AGUARDANDO) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Partida não está aguardando jogadores");
+        }
+
+        Usuario usuario = usuarioRespository.findById(usuarioId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
 
         if (partidaJogadorRepository.existsByPartidaIdAndUsuarioId(partidaId, usuario.getId())) {
@@ -159,11 +160,11 @@ public class PartidaService {
         return partidaRepository.findAll();
     }
     @Transactional
-    public MensagemChat enviarMensagem(Long partidaId, EnviarMensagemRequest request) {
+    public MensagemChat enviarMensagem(Long partidaId, Long usuarioId, EnviarMensagemRequest request) {
         Partida partida = buscar(partidaId);
 
         PartidaJogador ficha = partidaJogadorRepository
-                .findByPartidaIdAndUsuarioId(partidaId, request.getUsuarioId())
+                .findByPartidaIdAndUsuarioId(partidaId, usuarioId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Jogador não está nessa partida"));
 
         MensagemChat mensagem = new MensagemChat();

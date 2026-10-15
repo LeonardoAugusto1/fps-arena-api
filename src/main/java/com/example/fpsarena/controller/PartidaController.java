@@ -19,8 +19,9 @@ public class PartidaController {
         this.partidaService = partidaService;
     }
     @PostMapping
-    public PartidaResponse criar(@Valid @RequestBody CriarPartidaRequest request) {
-        return PartidaResponse.de(partidaService.criar(request));
+    public PartidaResponse criar(@Valid @RequestBody CriarPartidaRequest request, Authentication authentication) {
+        Long usuarioId = (Long) authentication.getPrincipal();
+        return PartidaResponse.de(partidaService.criar(usuarioId, request));
     }
     @GetMapping
     public List<PartidaResponse> listar() {
@@ -45,22 +46,27 @@ public class PartidaController {
         return JogadorLobbyResponse.de(partidaService.alternarPronto(id, request));
     }
 
-    @DeleteMapping("/{id}/jogadores/{usuarioId}")
-    public List<JogadorLobbyResponse> sair(@PathVariable Long id, @PathVariable Long usuarioId) {
+    @DeleteMapping("/{id}/jogadores/eu")
+    public List<JogadorLobbyResponse> sair(@PathVariable Long id, Authentication authentication) {
+        Long usuarioId = (Long) authentication.getPrincipal();
         return partidaService.sair(id, usuarioId).stream().map(JogadorLobbyResponse::de).toList();
     }
     @PostMapping("/{id}/mensagens")
     public MensagemChatResponse enviarMensagem(
             @PathVariable Long id,
-            @Valid @RequestBody EnviarMensagemRequest request) {
+            @Valid @RequestBody EnviarMensagemRequest request,
+            Authentication authentication) {
+
+        Long usuarioId = (Long) authentication.getPrincipal();
 
         return MensagemChatResponse.de(
-                partidaService.enviarMensagem(id, request)
+                partidaService.enviarMensagem(id, usuarioId, request)
         );
     }
     @PostMapping("/{id}/entrar")
-    public JogadorLobbyResponse entrar(@PathVariable Long id, @Valid @RequestBody EntrarPartidaRequest request) {
-        return JogadorLobbyResponse.de(partidaService.entrar(id, request));
+    public JogadorLobbyResponse entrar(@PathVariable Long id, @Valid @RequestBody EntrarPartidaRequest request, Authentication authentication) {
+        Long usuarioId = (Long) authentication.getPrincipal();
+        return JogadorLobbyResponse.de(partidaService.entrar(id, usuarioId, request));
     }
 
     @GetMapping("/{id}/mensagens")

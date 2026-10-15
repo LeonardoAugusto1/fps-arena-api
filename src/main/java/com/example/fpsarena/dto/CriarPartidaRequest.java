@@ -5,10 +5,6 @@ import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 
 public class CriarPartidaRequest {
-
-    @NotNull
-    private Long usuarioId;
-
     @NotBlank
     @Size(max = 100)
     private String nome;
@@ -40,14 +36,6 @@ public class CriarPartidaRequest {
 
     @NotNull
     private Boolean publica;
-
-    public Long getUsuarioId() {
-        return usuarioId;
-    }
-
-    public void setUsuarioId(Long usuarioId) {
-        this.usuarioId = usuarioId;
-    }
 
     public String getNome() {
         return nome;

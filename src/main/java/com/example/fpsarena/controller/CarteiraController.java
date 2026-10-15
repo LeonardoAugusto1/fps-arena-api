@@ -4,6 +4,7 @@ import com.example.fpsarena.dto.ValorRequest;
 import com.example.fpsarena.model.Transacao;
 import com.example.fpsarena.service.CarteiraService;
 import jakarta.validation.Valid;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,16 +18,22 @@ public class CarteiraController {
     public CarteiraController(CarteiraService carteiraService) {
         this.carteiraService = carteiraService;
     }
-    @PostMapping("/{usuarioId}/depositar")
-    public Transacao depositar(@PathVariable Long usuarioId, @Valid @RequestBody ValorRequest request){
+
+    @PostMapping("/depositar")
+    public Transacao depositar(Authentication authentication, @Valid @RequestBody ValorRequest request) {
+        Long usuarioId = (Long) authentication.getPrincipal();
         return carteiraService.depositar(usuarioId, request.getValor());
     }
-    @PostMapping("/{usuarioId}/sacar")
-    public Transacao sacar(@PathVariable Long usuarioId, @Valid @RequestBody ValorRequest request){
+
+    @PostMapping("/sacar")
+    public Transacao sacar(Authentication authentication, @Valid @RequestBody ValorRequest request) {
+        Long usuarioId = (Long) authentication.getPrincipal();
         return carteiraService.sacar(usuarioId, request.getValor());
     }
-    @GetMapping("/{usuarioId}/transacoes")
-    public List<Transacao> listar(@PathVariable Long usuarioId){
+
+    @GetMapping("/transacoes")
+    public List<Transacao> listar(Authentication authentication) {
+        Long usuarioId = (Long) authentication.getPrincipal();
         return carteiraService.listar(usuarioId);
     }
 }
