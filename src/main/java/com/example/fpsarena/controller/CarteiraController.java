@@ -1,7 +1,7 @@
 package com.example.fpsarena.controller;
 
+import com.example.fpsarena.dto.TransacaoResponse;
 import com.example.fpsarena.dto.ValorRequest;
-import com.example.fpsarena.model.Transacao;
 import com.example.fpsarena.service.CarteiraService;
 import jakarta.validation.Valid;
 import org.springframework.security.core.Authentication;
@@ -20,20 +20,22 @@ public class CarteiraController {
     }
 
     @PostMapping("/depositar")
-    public Transacao depositar(Authentication authentication, @Valid @RequestBody ValorRequest request) {
+    public TransacaoResponse depositar(Authentication authentication, @Valid @RequestBody ValorRequest request) {
         Long usuarioId = (Long) authentication.getPrincipal();
-        return carteiraService.depositar(usuarioId, request.getValor());
+        return TransacaoResponse.de(carteiraService.depositar(usuarioId, request.getValor()));
     }
 
     @PostMapping("/sacar")
-    public Transacao sacar(Authentication authentication, @Valid @RequestBody ValorRequest request) {
+    public TransacaoResponse sacar(Authentication authentication, @Valid @RequestBody ValorRequest request) {
         Long usuarioId = (Long) authentication.getPrincipal();
-        return carteiraService.sacar(usuarioId, request.getValor());
+        return TransacaoResponse.de(carteiraService.sacar(usuarioId, request.getValor()));
     }
 
     @GetMapping("/transacoes")
-    public List<Transacao> listar(Authentication authentication) {
+    public List<TransacaoResponse> listar(Authentication authentication) {
         Long usuarioId = (Long) authentication.getPrincipal();
-        return carteiraService.listar(usuarioId);
+        return carteiraService.listar(usuarioId).stream()
+                .map(TransacaoResponse::de)
+                .toList();
     }
 }

@@ -86,6 +86,12 @@ public class PartidaService {
         if (partida.getStatus() != StatusPartida.AGUARDANDO) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Partida não está aguardando jogadores");
         }
+        String senhaDaPartida = partida.getSenha();
+        if (senhaDaPartida != null && !senhaDaPartida.isBlank()) {
+            if (!senhaDaPartida.equals(request.getSenha())) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Senha incorreta");
+            }
+        }
 
         Usuario usuario = usuarioRespository.findById(usuarioId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
@@ -156,8 +162,34 @@ public class PartidaService {
 
         return restantes;
     }
+    @Transactional
+    public Partida iniciar(Long partidaId, Long usuarioId) {
+        Partida partida = buscar(partidaId);
+
+        PartidaJogador ficha = partidaJogadorRepository
+                .findByPartidaIdAndUsuarioId(partidaId, usuarioId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Jogador não está nessa partida"));
+
+        if (!ficha.isLider()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Só o líder pode iniciar a partida");
+        }
+
+        if (partida.getStatus() != StatusPartida.AGUARDANDO) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Partida não está aguardando jogadores");
+        }
+
+        long noCT = partidaJogadorRepository.countByPartidaIdAndTimeJogo(partidaId, TimeJogo.CT);
+        long noT = partidaJogadorRepository.countByPartidaIdAndTimeJogo(partidaId, TimeJogo.T);
+        if (noCT < 1 || noT < 1) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "É preciso ter pelo menos 1 jogador em cada time");
+        }
+
+        partida.setStatus(StatusPartida.EM_ANDAMENTO);
+        return partidaRepository.save(partida);
+    }
+
     public List<Partida> listar() {
-        return partidaRepository.findAll();
+        return partidaRepository.findByPublicaTrue();
     }
     @Transactional
     public MensagemChat enviarMensagem(Long partidaId, Long usuarioId, EnviarMensagemRequest request) {

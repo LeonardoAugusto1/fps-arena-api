@@ -45,6 +45,11 @@ public class PartidaController {
 
         return JogadorLobbyResponse.de(partidaService.alternarPronto(id, request));
     }
+    @PostMapping("/{id}/iniciar")
+    public PartidaResponse iniciar(@PathVariable Long id, Authentication authentication) {
+        Long usuarioId = (Long) authentication.getPrincipal();
+        return PartidaResponse.de(partidaService.iniciar(id, usuarioId));
+    }
 
     @DeleteMapping("/{id}/jogadores/eu")
     public List<JogadorLobbyResponse> sair(@PathVariable Long id, Authentication authentication) {

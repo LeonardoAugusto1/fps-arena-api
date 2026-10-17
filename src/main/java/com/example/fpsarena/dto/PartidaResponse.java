@@ -21,11 +21,12 @@ public class PartidaResponse {
     private final LocalDateTime dataCriacao;
     private final Long criadorId;
     private final String criadorNome;
+    private final Boolean temSenha;
 
     public PartidaResponse(Long id, String nome, String modo, String tipo, String mapa, String regiao,
                            BigDecimal valorInscricao, Integer vagas, Boolean publica,
                            StatusPartida status, LocalDateTime dataCriacao,
-                           Long criadorId, String criadorNome) {
+                           Long criadorId, String criadorNome, Boolean temSenha) {
         this.id = id;
         this.nome = nome;
         this.modo = modo;
@@ -39,6 +40,7 @@ public class PartidaResponse {
         this.dataCriacao = dataCriacao;
         this.criadorId = criadorId;
         this.criadorNome = criadorNome;
+        this.temSenha = temSenha;
     }
 
     public static PartidaResponse de(Partida partida) {
@@ -55,7 +57,8 @@ public class PartidaResponse {
                 partida.getStatus(),
                 partida.getDataCriacao(),
                 partida.getCriador().getId(),
-                partida.getCriador().getNome()
+                partida.getCriador().getNome(),
+                partida.getSenha() != null && !partida.getSenha().isBlank()
         );
     }
 
@@ -109,5 +112,9 @@ public class PartidaResponse {
 
     public String getCriadorNome() {
         return criadorNome;
+    }
+
+    public Boolean getTemSenha() {
+        return temSenha;
     }
 }

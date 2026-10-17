@@ -22,6 +22,8 @@ public class Campeonato {
 
     @Column(nullable = false,precision = 12, scale = 2)
     private BigDecimal premiacao;
+    @Column(nullable = false, precision = 12, scale = 2)
+    private BigDecimal valorInscricao;
 
     @Column(nullable = false)
     private Integer vagas;
@@ -62,6 +64,8 @@ public BigDecimal getPremiacao() {
 public void setPremiacao(BigDecimal premiacao) {
     this.premiacao = premiacao;
 }
+public BigDecimal getValorInscricao() {return valorInscricao;}
+public void setValorInscricao(BigDecimal valorInscricao) {this.valorInscricao = valorInscricao;}
 public Integer getVagas() {
     return vagas;
 }

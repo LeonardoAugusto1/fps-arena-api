@@ -21,6 +21,9 @@ public class CriarCampeonatoRequest {
     @NotNull
     @PositiveOrZero
     private BigDecimal premiacao;
+    @NotNull
+    @PositiveOrZero
+    private BigDecimal valorInscricao;
 
     @NotNull
     @Min(2)
@@ -58,7 +61,8 @@ public class CriarCampeonatoRequest {
     public void setPremiacao(BigDecimal premiacao) {
         this.premiacao = premiacao;
     }
-
+    public BigDecimal getValorInscricao() {return valorInscricao;}
+    public void setValorInscricao(BigDecimal valorInscricao) {this.valorInscricao = valorInscricao;}
     public Integer getVagas() {
         return vagas;
     }

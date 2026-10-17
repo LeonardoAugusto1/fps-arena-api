@@ -2,6 +2,7 @@ package com.example.fpsarena.controller;
 
 import com.example.fpsarena.dto.CampeonatoResponse;
 import com.example.fpsarena.dto.CriarCampeonatoRequest;
+import com.example.fpsarena.dto.InscricaoCampeonatoRequest;
 import com.example.fpsarena.service.CampeonatoService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
@@ -31,8 +32,33 @@ public class CampeonatoController {
         return CampeonatoResponse.de(campeonatoService.criar(request));
     }
 
+    @PostMapping("/{id}/inscricoes")
+    public void inscrever(
+            @PathVariable Long id,
+            @Valid @RequestBody InscricaoCampeonatoRequest request) {
+
+        campeonatoService.inscrever(id, request.getUsuarioId());
+    }
+
+    // PASSO 9: Cancelar Inscrição
+    @DeleteMapping("/{id}/inscricoes/{usuarioId}")
+    public void cancelarInscricao(
+            @PathVariable Long id,
+            @PathVariable Long usuarioId) {
+
+        campeonatoService.cancelarInscricao(id, usuarioId);
+    }
+
     @DeleteMapping("/{id}")
     public void deletar(@PathVariable Long id) {
         campeonatoService.deletar(id);
     }
+    @PostMapping("/{id}/finalizar")
+    public void finalizar(
+            @PathVariable Long id,
+            @RequestParam Long vencedorId) {
+
+        campeonatoService.finalizar(id, vencedorId);
+    }
+
 }
