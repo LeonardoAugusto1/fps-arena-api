@@ -5,6 +5,7 @@ import com.example.fpsarena.dto.CriarCampeonatoRequest;
 import com.example.fpsarena.dto.InscricaoCampeonatoRequest;
 import com.example.fpsarena.service.CampeonatoService;
 import jakarta.validation.Valid;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,17 +36,19 @@ public class CampeonatoController {
     @PostMapping("/{id}/inscricoes")
     public void inscrever(
             @PathVariable Long id,
-            @Valid @RequestBody InscricaoCampeonatoRequest request) {
+            Authentication authentication) {
 
-        campeonatoService.inscrever(id, request.getUsuarioId());
+        Long usuarioId = (Long) authentication.getPrincipal();
+        campeonatoService.inscrever(id, usuarioId);
     }
 
     // PASSO 9: Cancelar Inscrição
-    @DeleteMapping("/{id}/inscricoes/{usuarioId}")
+    @DeleteMapping("/{id}/inscricoes/eu")
     public void cancelarInscricao(
             @PathVariable Long id,
-            @PathVariable Long usuarioId) {
+            Authentication authentication) {
 
+        Long usuarioId = (Long) authentication.getPrincipal();
         campeonatoService.cancelarInscricao(id, usuarioId);
     }
 

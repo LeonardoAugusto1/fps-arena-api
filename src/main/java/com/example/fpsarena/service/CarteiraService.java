@@ -42,7 +42,7 @@ public class CarteiraService {
     @Transactional
     public Transacao debitar(Usuario usuario, BigDecimal valor, String descricao) {
         if (usuario.getSaldo().compareTo(valor) < 0) {
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Saldo insuficiente");
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_CONTENT, "Saldo insuficiente");
         }
         usuario.setSaldo(usuario.getSaldo().subtract(valor));
         usuarioRespository.save(usuario);

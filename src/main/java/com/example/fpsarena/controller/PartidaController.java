@@ -32,7 +32,7 @@ public class PartidaController {
     public PartidaResponse buscar(@PathVariable Long id) {
         return PartidaResponse.de(partidaService.buscar(id));
     }
-    @GetMapping("/{id}/lobby")
+    @GetMapping({"/{id}/lobby", "/{id}/jogadores"})
     public List<JogadorLobbyResponse> lobby(@PathVariable Long id) {
         return partidaService.lobby(id).stream().map(JogadorLobbyResponse::de).toList();
     }
@@ -72,6 +72,22 @@ public class PartidaController {
     public JogadorLobbyResponse entrar(@PathVariable Long id, @Valid @RequestBody EntrarPartidaRequest request, Authentication authentication) {
         Long usuarioId = (Long) authentication.getPrincipal();
         return JogadorLobbyResponse.de(partidaService.entrar(id, usuarioId, request));
+    }
+    @PostMapping("/{id}/time")
+    public JogadorLobbyResponse escolherTime(
+            @PathVariable Long id,
+            @RequestBody EscolherTimeRequest request,
+            Authentication authentication) {
+
+        Long usuarioId = (Long) authentication.getPrincipal();
+
+        return JogadorLobbyResponse.de(
+                partidaService.escolherTime(
+                        id,
+                        usuarioId,
+                        request.getTimeJogo()
+                )
+        );
     }
 
     @GetMapping("/{id}/mensagens")

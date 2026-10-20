@@ -72,7 +72,7 @@ public class PartidaService {
         PartidaJogador ficha = new PartidaJogador();
         ficha.setPartida(partidaSalva);
         ficha.setUsuario(criador);
-        ficha.setTimeJogo(TimeJogo.CT);
+        ficha.setTimeJogo(TimeJogo.SEM_TIME);
         ficha.setLider(true);
         ficha.setPronto(false);
         partidaJogadorRepository.save(ficha);
@@ -100,11 +100,6 @@ public class PartidaService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Jogador já está nessa partida");
         }
 
-        int limiteDoTime = Integer.parseInt(partida.getModo().split("v")[0]);
-        long ocupados = partidaJogadorRepository.countByPartidaIdAndTimeJogo(partidaId, request.getTimeJogo());
-        if (ocupados >= limiteDoTime) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Time lotado");
-        }
 
         if (partida.getValorInscricao().compareTo(BigDecimal.ZERO) > 0) {
             carteiraService.debitar(usuario, partida.getValorInscricao(), "Inscrição em partida");
@@ -113,9 +108,53 @@ public class PartidaService {
         PartidaJogador ficha = new PartidaJogador();
         ficha.setPartida(partida);
         ficha.setUsuario(usuario);
-        ficha.setTimeJogo(request.getTimeJogo());
+        ficha.setTimeJogo(TimeJogo.SEM_TIME);
         ficha.setLider(false);
         ficha.setPronto(false);
+        return partidaJogadorRepository.save(ficha);
+    }
+    @Transactional
+    public PartidaJogador escolherTime(Long partidaId, Long usuarioId, TimeJogo timeJogo) {
+
+        Partida partida = buscar(partidaId);
+
+        if (partida.getStatus() != StatusPartida.AGUARDANDO) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Partida não está aguardando jogadores"
+            );
+        }
+
+        if (timeJogo != TimeJogo.CT && timeJogo != TimeJogo.T) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Escolha apenas CT ou T"
+            );
+        }
+
+        PartidaJogador ficha = partidaJogadorRepository
+                .findByPartidaIdAndUsuarioId(partidaId, usuarioId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Jogador não está nessa partida"
+                ));
+
+        int limiteDoTime = Integer.parseInt(
+                partida.getModo().split("v")[0]
+        );
+
+        long ocupados = partidaJogadorRepository
+                .countByPartidaIdAndTimeJogo(partidaId, timeJogo);
+
+        if (ocupados >= limiteDoTime) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Time lotado"
+            );
+        }
+
+        ficha.setTimeJogo(timeJogo);
+
         return partidaJogadorRepository.save(ficha);
     }
 

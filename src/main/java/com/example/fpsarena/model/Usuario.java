@@ -30,6 +30,7 @@ public class Usuario {
 
     public Usuario() {
         this.role = Role.USER;
+        this.saldo = BigDecimal.ZERO;
     }
 
     public Long getId() {
