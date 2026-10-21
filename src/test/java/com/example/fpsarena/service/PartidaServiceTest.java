@@ -47,30 +47,31 @@ class PartidaServiceTest {
     private PartidaService partidaService;
 
     @Test
-    void entrarEmTimeLotadoDeveDar409() {
+    void escolherTimeLotadoDeveDar409() {
         Partida partida = new Partida();
         partida.setModo("1v1");
         partida.setStatus(StatusPartida.AGUARDANDO);
         partida.setValorInscricao(BigDecimal.ZERO);
 
-        Usuario usuario = new Usuario();
-
-        EntrarPartidaRequest request = new EntrarPartidaRequest();
-        request.setTimeJogo(TimeJogo.CT);
+        PartidaJogador ficha = new PartidaJogador();
 
         when(partidaRepository.findById(1L)).thenReturn(Optional.of(partida));
-        when(usuarioRespository.findById(2L)).thenReturn(Optional.of(usuario));
-        when(partidaJogadorRepository.countByPartidaIdAndTimeJogo(1L, TimeJogo.CT)).thenReturn(1L);
+
+        when(partidaJogadorRepository.findByPartidaIdAndUsuarioId(1L, 2L))
+                .thenReturn(Optional.of(ficha));
+
+        when(partidaJogadorRepository.countByPartidaIdAndTimeJogo(1L, TimeJogo.CT))
+                .thenReturn(1L);
 
         ResponseStatusException erro = assertThrows(
                 ResponseStatusException.class,
-                () -> partidaService.entrar(1L, 2L, request)
+                () -> partidaService.escolherTime(1L, 2L, TimeJogo.CT)
         );
 
         assertEquals(HttpStatus.CONFLICT, erro.getStatusCode());
         assertEquals("Time lotado", erro.getReason());
+
         verify(partidaJogadorRepository, never()).save(any());
-        verify(carteiraService, never()).debitar(any(), any(), any());
     }
     @Test
     void entrarJaEstandoNaPartidaDeveDar409() {
