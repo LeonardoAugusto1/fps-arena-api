@@ -24,6 +24,9 @@ public class Usuario {
     @Column(length = 100)
     private String senha;
 
+    @Column(unique = true, length = 100)
+    private String email;
+
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
     private Role role;
@@ -59,6 +62,14 @@ public class Usuario {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Role getRole() {
